@@ -13,7 +13,7 @@ jobs:
         
         steps:
             - uses: actions/checkout@v3
-            - name: Set up Pytohn ${{matrix.python-version}}
+            - name: Set up Python ${{matrix.python-version}}
               uses: actions/setup-python@v4
               with:
                 python-version: ${{matrix.python-version}}
@@ -21,5 +21,7 @@ jobs:
               run: |
                 python -m pip install --upgrade pip
                 pip install tox-gh>=1.2
-            - name: Test with tox
-              run: tox
+            - name: Setup test suite
+              run: tox -vv --notest
+            - name: Run test suite
+              run: tox --skip-pkg-install
