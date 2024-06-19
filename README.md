@@ -43,11 +43,11 @@ exc = cc.Binance(
     master_api_key="",
     master_api_secret="",
 )
-# bybit = cc.Bybit(
+# exc = cc.Bybit(
 #     api_key="",
 #     api_secret="",
 # )
-# htx = cc.HTX(
+# exc = cc.HTX(
 #     api_key="",
 #     api_secret="",
 # )
