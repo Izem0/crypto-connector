@@ -1,7 +1,14 @@
+import sys
+
 import pytest
 
 from crypto_connector.base.errors import ExchangeError
 from crypto_connector.base.schemas import Order
+
+# cannot currently run tests on github runners (because hosted in the US)
+pytestmark = pytest.mark.skipif(
+    not sys.platform.startswith("win"), reason="tests for windows only"
+)
 
 
 def test_get_open_orders(exchanges):
