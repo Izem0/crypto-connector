@@ -1,11 +1,13 @@
 name: Publish Python 🐍 distribution 📦 and TestPyPI
 
-on: push
+on:
+  push:
+    tags:
+      - '*'
 
 jobs:
   build:
     name: Build distribution 📦
-    if: startsWith(github.ref, 'refs/tags/')  # only publish to testPyPI on tag pushes
     runs-on: ubuntu-latest
 
     steps:
