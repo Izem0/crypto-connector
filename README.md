@@ -76,5 +76,5 @@ print(exc.get_open_orders())
 ## Limitation
 
 - This library is not intended to be comprehensive, I use it mainly for my personal projects
-- Not all endpoints rfor the different APIs ae supported
+- Not all endpoints of the different APIs are supported
 - Websocket and Futures are not supported
