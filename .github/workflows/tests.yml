@@ -1,7 +1,6 @@
 name: Tests
 
-on:
-  push
+on: push
 
 jobs:
   test:
@@ -9,9 +8,9 @@ jobs:
     # runs-on: self-hosted
     strategy:
       matrix:
-          os: [ubuntu-latest]
-          python-version: ["3.10", "3.11", "3.12"]
-    
+        os: [ubuntu-latest]
+        python-version: ["3.10", "3.11", "3.12"]
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{matrix.python-version}}
