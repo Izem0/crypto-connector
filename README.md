@@ -42,7 +42,10 @@ API key/secret are required for private endpoints.
 ```python
 import crypto_connector as cc
 
-# some binance API endpoints require both sub and master accounts API key/secret. Therefore user needs to create a subaccount and provide subaccount api key, subaccount api secret, subaccount email, master account api key and master account api secret to the Binance constructor
+# some binance API endpoints require both sub and master accounts API key/secret.
+# Therefore user needs to create a subaccount and provide subaccount api key, 
+# subaccount api secret, subaccount email, master account api key and 
+# master account api secret to the Binance constructor
 exc = cc.Binance(
     sub_api_key="",
     sub_api_secret="",
