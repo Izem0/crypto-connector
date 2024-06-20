@@ -1,11 +1,11 @@
 # Crypto-connector
 
-<!-- [![PyPI version](https://img.shields.io/pypi/v/binance-connector)](https://pypi.python.org/pypi/binance-connector) -->
-<!-- [![Python version](https://img.shields.io/pypi/pyversions/binance-connector)](https://www.python.org/downloads/) -->
-<!-- [![Code Style](https://img.shields.io/badge/code_style-black-black)](https://black.readthedocs.io/en/stable/) -->
-<!-- [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) -->
-
 ![tests](https://github.com/Izem0/crypto-connector/actions/workflows/tests.yml/badge.svg)
+[![PyPI version](https://img.shields.io/pypi/v/crypto-connector)](https://pypi.python.org/pypi/crypto-connector)
+[![Python version](https://img.shields.io/pypi/pyversions/crypto-connector)](https://www.python.org/downloads/)
+[![Code Style](https://img.shields.io/badge/code_style-black-black)](https://black.readthedocs.io/en/stable/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 This is a lightweight library that works as a connector to Binance SPOT, Bybit and HTX SPOT APIs.
 
