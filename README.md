@@ -7,11 +7,11 @@
 
 ![tests](https://github.com/Izem0/crypto-connector/actions/workflows/tests.yml/badge.svg)
 
-This is a lightweight library that works as a connector to Binance, Bybit and HTX SPOT APIs.
+This is a lightweight library that works as a connector to Binance SPOT, Bybit and HTX SPOT APIs.
 
 - Supported APIs:
     - [Binance SPOT API](https://developers.binance.com/docs/binance-spot-api-docs/rest-api)
-    - [Bybit SPOT API](https://bybit-exchange.github.io/docs/v5/intro)
+    - [Bybit API](https://bybit-exchange.github.io/docs/v5/intro)
     - [HTX SPOT API](https://www.htx.com/en-in/opend/newApiPages/)
 
 ## Installation
@@ -42,7 +42,7 @@ API key/secret are required for private endpoints.
 ```python
 import crypto_connector as cc
 
-# some binance API endpoints require both sub and master accounts API key/secret. Therefore user needs to create a subaccount and provide subaccount api key, subaccount api_secret, subaccount email, master account api key and master account api secret to the Binance constructor
+# some binance API endpoints require both sub and master accounts API key/secret. Therefore user needs to create a subaccount and provide subaccount api key, subaccount api secret, subaccount email, master account api key and master account api secret to the Binance constructor
 exc = cc.Binance(
     sub_api_key="",
     sub_api_secret="",
