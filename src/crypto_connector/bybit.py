@@ -139,9 +139,6 @@ class Bybit(Exchange):
         params: dict | None = None,
         data: dict | None = None,
     ) -> dict[str, Any]:
-        if not self.api_secret:
-            raise AuthenticationError("This endpoint needs authentication.")
-
         if params and data:
             raise ValueError("Can only pass `params` or `data`, but not both.")
 

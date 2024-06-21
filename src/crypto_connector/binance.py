@@ -118,9 +118,6 @@ class Binance(Exchange):
         data: dict | None = None,
         master: bool = False,
     ) -> Any:
-        if (not self.sub_api_key) or (not self.master_api_key):
-            raise AuthenticationError("This endpoint needs authentication.")
-
         if params and data:
             raise ValueError("Can only pass `params` or `data`, but not both.")
 
