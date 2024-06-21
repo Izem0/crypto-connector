@@ -123,7 +123,7 @@ class Binance(Exchange):
             or (not self.sub_api_secret)
             or (not self.sub_email)
             or (not self.master_api_key)
-            or (self.master_api_secret)
+            or (not self.master_api_secret)
         ):
             raise MissingCredentials(
                 "To use private endpoints, user must pass credentials."
