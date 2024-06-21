@@ -134,7 +134,7 @@ class HTX(Exchange):
         )
         host = urlparse(self.base_url).hostname
         to_hash = f"{http_method}\n{host}\n{url_path}\n{encoded_payload}"
-        hash_obj = self.hash(self.api_secret, query_str=to_hash)
+        hash_obj = self.hash(self.api_secret, query_str=to_hash)  # type: ignore[arg-type]  # noqa: E501
         signature = self.base64_encode(hash_obj)
         to_sign_payload.update({"Signature": signature})
         url_path += "?" + self._urlencode_params(to_sign_payload)

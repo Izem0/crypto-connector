@@ -7,7 +7,11 @@ from typing import Any, Literal
 
 from requests import Response
 
-from crypto_connector.base.errors import BadResponse, ExchangeError, OrderNotFound
+from crypto_connector.base.errors import (
+    BadResponse,
+    ExchangeError,
+    OrderNotFound,
+)
 from crypto_connector.base.exchange import Exchange
 from crypto_connector.base.schemas import (
     API,
@@ -150,7 +154,7 @@ class Bybit(Exchange):
             f"{self.recv_window}"
             f"{encoded_payload}"
         )
-        signature = self.hash(self.api_secret, query_str=to_hash)
+        signature = self.hash(self.api_secret, query_str=to_hash)  # type: ignore[arg-type]  # noqa: E501
         self.session.headers.update(
             {
                 "X-BAPI-API-KEY": self.api_key,
