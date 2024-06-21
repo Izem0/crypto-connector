@@ -11,6 +11,7 @@ from requests import Response
 from crypto_connector.base.errors import (
     BadResponse,
     ExchangeError,
+    MissingCredentials,
     OrderNotFound,
 )
 from crypto_connector.base.exchange import Exchange
@@ -117,6 +118,17 @@ class Binance(Exchange):
         data: dict | None = None,
         master: bool = False,
     ) -> Any:
+        if (
+            (not self.sub_api_key)
+            or (not self.sub_api_secret)
+            or (not self.sub_email)
+            or (not self.master_api_key)
+            or (self.master_api_secret)
+        ):
+            raise MissingCredentials(
+                "To use private endpoints, user must pass credentials."
+            )
+
         if params and data:
             raise ValueError("Can only pass `params` or `data`, but not both.")
 

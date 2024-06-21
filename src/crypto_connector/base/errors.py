@@ -18,7 +18,7 @@ class InvalidOrder(ExchangeError):
     pass
 
 
-class AuthenticationError(ExchangeError):
+class MissingCredentials(ExchangeError):
     pass
 
 

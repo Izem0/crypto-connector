@@ -10,6 +10,7 @@ from requests import Response
 from crypto_connector.base.errors import (
     BadResponse,
     ExchangeError,
+    MissingCredentials,
     OrderNotFound,
 )
 from crypto_connector.base.exchange import Exchange
@@ -138,6 +139,11 @@ class Bybit(Exchange):
         params: dict | None = None,
         data: dict | None = None,
     ) -> dict[str, Any]:
+        if (not self.api_key) or (not self.api_secret):
+            raise MissingCredentials(
+                "To use private endpoints, user must pass credentials."
+            )
+
         if params and data:
             raise ValueError("Can only pass `params` or `data`, but not both.")
 
