@@ -6,6 +6,7 @@ __pycache__
 .scannerwork
 .tox
 .vscode
+cmds.md
 coverage-reports
 dist
 htmlcov
