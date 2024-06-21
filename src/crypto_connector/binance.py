@@ -9,7 +9,6 @@ from urllib.parse import urlencode
 from requests import Response
 
 from crypto_connector.base.errors import (
-    AuthenticationError,
     BadResponse,
     ExchangeError,
     OrderNotFound,

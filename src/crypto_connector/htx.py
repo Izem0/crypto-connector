@@ -9,11 +9,7 @@ from urllib.parse import urlencode, urlparse
 
 from requests.models import Response
 
-from crypto_connector.base.errors import (
-    AuthenticationError,
-    BadResponse,
-    ExchangeError,
-)
+from crypto_connector.base.errors import BadResponse, ExchangeError
 from crypto_connector.base.exchange import Exchange
 from crypto_connector.base.schemas import (
     API,
