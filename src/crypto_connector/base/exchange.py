@@ -135,8 +135,7 @@ class Exchange:
     def prepare_params(self, params: dict[str, Any]) -> dict[str, Any]:
         return self._cast_values(self._clean_none_values(params))
 
-    @staticmethod
-    def handle_exception(r: requests.Response) -> None:
+    def handle_exception(self, r: requests.Response) -> None:
         return
 
     def request(

@@ -56,11 +56,13 @@ class HTX(Exchange):
         self,
         api_key: str | None = None,
         api_secret: str | None = None,
+        headers: bool = False,
         **kwargs,
     ) -> None:
         super().__init__()
         self.api_key = api_key
         self.api_secret = api_secret
+        self.headers = headers
 
     @staticmethod
     def get_timestamp() -> str:
@@ -154,8 +156,7 @@ class HTX(Exchange):
             prep_data = self._prepare_request_data(data=payload)
             return self.request(http_method, url_path=url_path, data=prep_data)
 
-    @staticmethod
-    def handle_exception(r: Response) -> None:
+    def handle_exception(self, r: Response) -> None:
         try:
             rjson = r.json()
         except JSONDecodeError:
@@ -167,7 +168,8 @@ class HTX(Exchange):
         error = {}
         error["status_code"] = rjson.get("err-code") or rjson.get("code")
         error["msg"] = rjson.get("err-msg") or rjson.get("message")
-        error["headers"] = r.headers
+        if self.headers:
+            error["headers"] = r.headers
         raise ExchangeError(error)
 
     ###############################

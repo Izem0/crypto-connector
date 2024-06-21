@@ -67,6 +67,7 @@ class Binance(Exchange):
         sub_email: str | None = None,
         master_api_key: str | None = None,
         master_api_secret: str | None = None,
+        headers: bool = False,
         **kwargs,
     ) -> None:
         super().__init__()
@@ -75,6 +76,7 @@ class Binance(Exchange):
         self.sub_email = sub_email
         self.master_api_key = master_api_key
         self.master_api_secret = master_api_secret
+        self.headers = headers
 
     @staticmethod
     def get_timestamp() -> int:
@@ -153,8 +155,7 @@ class Binance(Exchange):
         else:
             return self.request(http_method, url_path=url_path, data=payload)
 
-    @staticmethod
-    def handle_exception(r: Response) -> None:
+    def handle_exception(self, r: Response) -> None:
         if r.status_code == 200:
             return
 
@@ -166,7 +167,8 @@ class Binance(Exchange):
         error = {}
         error["error_code"] = rjson["code"]
         error["msg"] = rjson["msg"]
-        error["headers"] = r.headers
+        if self.headers:
+            error["headers"] = r.headers
         raise ExchangeError(error)
 
     #################

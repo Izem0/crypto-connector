@@ -76,11 +76,13 @@ class Bybit(Exchange):
         self,
         api_key: str | None = None,
         api_secret: str | None = None,
+        headers: bool = False,
         **kwargs,
     ) -> None:
         super().__init__()
         self.api_key = api_key
         self.api_secret = api_secret
+        self.headers = headers
 
     @staticmethod
     def get_timestamp() -> int:
@@ -178,8 +180,7 @@ class Bybit(Exchange):
                 http_method, url_path=url_path, data=encoded_payload
             )
 
-    @staticmethod
-    def handle_exception(r: Response) -> None:
+    def handle_exception(self, r: Response) -> None:
         try:
             rjson = r.json()
         except json.JSONDecodeError:
@@ -191,7 +192,8 @@ class Bybit(Exchange):
         error = {}
         error["error_code"] = rjson["retCode"]
         error["msg"] = rjson["retMsg"]
-        error["headers"] = r.headers
+        if self.headers:
+            error["headers"] = r.headers
         raise ExchangeError(error)
 
     ###############################
