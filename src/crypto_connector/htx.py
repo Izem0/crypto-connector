@@ -329,9 +329,7 @@ class HTX(Exchange):
 
     def _parse_transfer(self, transfer: dict[str, Any]) -> dict[str, Any]:
         tr = Transfer(
-            id=transfer["record-id"],
-            datetime=transfer["transact-time"],
-            timestamp=transfer["transact-time"],
+            date=transfer["transact-time"],
             status=TranferStatus.success,
             from_id=transfer["source-id"],
             to_id=transfer["account-id"],

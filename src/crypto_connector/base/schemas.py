@@ -95,9 +95,7 @@ class TranferStatus(str, Enum):
 class Transfer(BaseModel):
     model_config = ConfigDict(coerce_numbers_to_str=True, use_enum_values=True)
 
-    id: str
-    datetime: datetime
-    timestamp: int
+    date: datetime
     status: TranferStatus
     from_id: str
     to_id: str

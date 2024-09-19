@@ -306,9 +306,7 @@ class Binance(Exchange):
 
     def _parse_transfer(self, transfer: dict[str, Any]) -> dict[str, Any]:
         tr = Transfer(
-            id=transfer["tranId"],
-            datetime=transfer["time"],
-            timestamp=transfer["time"],
+            date=transfer["time"],
             status=self.transfer_statuses[transfer["status"]],
             from_id=transfer["from"],
             to_id=transfer["to"],
