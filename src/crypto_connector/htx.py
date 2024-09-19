@@ -281,6 +281,40 @@ class HTX(Exchange):
         r = self.signed_request(
             "GET", f"/v1/account/accounts/{account_id}/balance"
         )
+        # {
+        #   "status": "ok",
+        #   "data": {
+        #     "id": 1000001,
+        #     "type": "spot",
+        #     "state": "working",
+        #     "list": [
+        #       {
+        #         "currency": "usdt",
+        #         "type": "trade",
+        #         "balance": "91.850043797676510303",
+        #         "debt": "invalid",
+        #         "available": "invalid",
+        #         "seq-num": "477"
+        #       },
+        #       {
+        #         "currency": "usdt",
+        #         "type": "frozen",
+        #         "balance": "5.160000000000000015",
+        #         "debt": "invalid",
+        #         "available": "invalid",
+        #         "seq-num": "477"
+        #       },
+        #       {
+        #         "currency": "poly",
+        #         "type": "trade",
+        #         "balance": "147.928994082840236",
+        #         "debt": "invalid",
+        #         "available": "invalid",
+        #         "seq-num": "2"
+        #       }
+        #     ]
+        #   }
+        # }
         balance_assets = {}
         for raw_asset in r["data"]["list"]:
             if raw_asset["type"] == "frozen":
