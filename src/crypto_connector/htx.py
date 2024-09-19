@@ -268,7 +268,7 @@ class HTX(Exchange):
         return BalanceAsset(
             coin=asset["currency"],
             free=asset["available"],
-            total=None,
+            total=asset["available"],
         )
 
     def get_balance(self) -> dict:

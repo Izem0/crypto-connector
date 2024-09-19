@@ -78,7 +78,7 @@ class OrderCancelled(BaseModel):
 class BalanceAsset(BaseModel):
     coin: Annotated[str, StringConstraints(to_upper=True)]
     free: float
-    total: float | None = None
+    total: float
 
 
 class Balance(BaseModel):
