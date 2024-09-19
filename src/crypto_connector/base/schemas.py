@@ -83,7 +83,7 @@ class BalanceAsset(BaseModel):
 
 class Balance(BaseModel):
     equity: float
-    assets: dict[str, Any]
+    assets: list[BalanceAsset]
 
 
 class TranferStatus(str, Enum):

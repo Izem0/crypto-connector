@@ -315,17 +315,14 @@ class HTX(Exchange):
         #     ]
         #   }
         # }
-        balance_assets = {}
+        balance_assets = []
         for raw_asset in r["data"]["list"]:
             if raw_asset["type"] == "frozen":
                 continue
             asset = self._parse_balance_asset(raw_asset)
             if asset.free == 0:
                 continue
-            asset_dict = {
-                asset.coin: {"free": asset.free, "total": asset.total}
-            }
-            balance_assets.update(asset_dict)
+            balance_assets.append(asset)
         balance_usd = self._get_balance_value()
         balance = Balance(equity=balance_usd, assets=balance_assets)
         return balance.model_dump()

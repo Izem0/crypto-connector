@@ -296,13 +296,10 @@ class Binance(Exchange):
         # 'takerCommission': 10,
         # 'uid': 526318869,
         # 'updateTime': 1718115238667}
-        balance_assets = {}
+        balance_assets = []
         for raw_asset in r["balances"]:
             asset = self._parse_balance_asset(raw_asset)
-            asset_dict = {
-                asset.coin: {"free": asset.free, "total": asset.total}
-            }
-            balance_assets.update(asset_dict)
+            balance_assets.append(asset)
         balance_usd = self._get_balance_value()
         balance = Balance(equity=balance_usd, assets=balance_assets)
         return balance.model_dump()
