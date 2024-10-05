@@ -328,9 +328,7 @@ class Bybit(Exchange):
 
     def _parse_transfer(self, transfer: dict[str, Any]) -> dict[str, Any]:
         tr = Transfer(
-            id=transfer["transferId"],
-            datetime=transfer["timestamp"],
-            timestamp=transfer["timestamp"],
+            date=transfer["timestamp"],
             status=self.transfer_statuses[transfer["status"]],
             from_id=transfer["fromMemberId"],
             to_id=transfer["toMemberId"],
