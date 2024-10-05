@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "crypto-connector"
-version = "0.2.0"
+version = "0.2.1"
 authors = [{ name = "Izem Mangione", email = "izem.mangione@gmail.com" }]
 description = "A lightweight library that works as a connector to several crypto exchanges APIs."
 readme = "README.md"
