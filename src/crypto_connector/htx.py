@@ -29,7 +29,6 @@ from crypto_connector.base.schemas import (
 
 
 class HTX(Exchange):
-
     base_url = "https://api.huobi.pro"  # or api-aws.huobi.pro for aws client
     name = "HTX"
     order_statuses = {
@@ -87,9 +86,7 @@ class HTX(Exchange):
         return out
 
     def _urlencode_params(self, params: dict) -> str:
-        return self._urlencode_dict(
-            self._cast_values(self._clean_none_values(params))
-        )
+        return self._urlencode_dict(self._cast_values(self._clean_none_values(params)))
 
     def _prepare_request_data(self, data: dict) -> str:
         casted_data = self._cast_values(self._clean_none_values(data))
@@ -140,9 +137,7 @@ class HTX(Exchange):
         if http_method == "GET":
             to_sign_payload.update(payload)
 
-        encoded_payload = self._urlencode_params(
-            self.sort_dict(to_sign_payload)
-        )
+        encoded_payload = self._urlencode_params(self.sort_dict(to_sign_payload))
         host = urlparse(self.base_url).hostname
         to_hash = f"{http_method}\n{host}\n{url_path}\n{encoded_payload}"
         hash_obj = self.hash(self.api_secret, query_str=to_hash)  # type: ignore[arg-type]  # noqa: E501
@@ -257,9 +252,7 @@ class HTX(Exchange):
         :see: https://www.htx.com/en-us/opend/newApiPages/?id=7ec4ff6d-7773-11ed-9966-0242ac110003
         """  # noqa: E501
         params = {"accountType": "spot", "valuationCurrency": "USD"}
-        r = self.signed_request(
-            "GET", "/v2/account/asset-valuation", params=params
-        )
+        r = self.signed_request("GET", "/v2/account/asset-valuation", params=params)
         balance_usd = r["data"]["balance"]
         return float(balance_usd)
 
@@ -278,9 +271,7 @@ class HTX(Exchange):
         :see: https://www.htx.com/en-us/opend/newApiPages/?id=7ec4b429-7773-11ed-9966-0242ac110003
         """  # noqa: E501
         account_id = self._account_id
-        r = self.signed_request(
-            "GET", f"/v1/account/accounts/{account_id}/balance"
-        )
+        r = self.signed_request("GET", f"/v1/account/accounts/{account_id}/balance")
         # {
         #   "status": "ok",
         #   "data": {
@@ -333,9 +324,7 @@ class HTX(Exchange):
             status=TranferStatus.success,
             from_id=transfer["source-id"],
             to_id=transfer["account-id"],
-            direction=(
-                "in" if transfer["account-id"] == self._account_id else "out"
-            ),
+            direction=("in" if transfer["account-id"] == self._account_id else "out"),
             coin=transfer["currency"],
             qty=transfer["transact-amt"],
             info=transfer,
@@ -399,9 +388,7 @@ class HTX(Exchange):
         :see: https://www.htx.com/en-us/opend/newApiPages/?id=7ec4f5d6-7773-11ed-9966-0242ac110003
         """  # noqa: E501
         params = {**kwargs}
-        r = self.request(
-            "GET", "/v1/settings/common/market-symbols", params=params
-        )
+        r = self.request("GET", "/v1/settings/common/market-symbols", params=params)
         # {
         # "status": "ok",
         # "data": [
@@ -451,14 +438,10 @@ class HTX(Exchange):
         :see: https://www.htx.com/en-us/opend/newApiPages/?id=7ec4f5d6-7773-11ed-9966-0242ac110003
         """  # noqa: E501
         if not market:
-            raise ValueError(
-                f"`market` cannot be empty, value passed: '{market}'"
-            )
+            raise ValueError(f"`market` cannot be empty, value passed: '{market}'")
 
         params = {"symbols": market}
-        r = self.request(
-            "GET", "/v1/settings/common/market-symbols", params=params
-        )
+        r = self.request("GET", "/v1/settings/common/market-symbols", params=params)
         # {'data': [{'ap': 4,
         #            'at': 'enabled',
         #            'bc': 'eth',
@@ -517,9 +500,7 @@ class HTX(Exchange):
     # #########
     def _parse_order(self, order: dict[str, Any]) -> dict[str, Any]:
         # handle typos in HTX response
-        filled_amount = order.get(
-            "filled-amount", order.get("field-amount", 0)
-        )
+        filled_amount = order.get("filled-amount", order.get("field-amount", 0))
 
         order_obj = Order(
             amount=order["amount"],
@@ -529,7 +510,7 @@ class HTX(Exchange):
             fee=None,
             fees=[],
             filled=filled_amount,
-            id=order["id"],
+            orderId=order["id"],
             info=order,
             last_trade_timestamp=None,
             last_update_timestamp=None,
@@ -625,9 +606,7 @@ class HTX(Exchange):
         order = self._parse_order(r["data"])
         return order
 
-    def get_open_orders(
-        self, market: str | None = None, **kwargs
-    ) -> list[dict]:
+    def get_open_orders(self, market: str | None = None, **kwargs) -> list[dict]:
         """
         Get all currently unfilled open orders.
         :see: https://www.htx.com/en-us/opend/newApiPages/?id=7ec4e04b-7773-11ed-9966-0242ac110003
@@ -661,7 +640,7 @@ class HTX(Exchange):
         """  # noqa: E501
         r = self.signed_request("POST", f"/v1/order/orders/{id}/submitcancel")
         # {'data': '1077586051442359', 'status': 'ok'}
-        order_obj = OrderCancelled(id=r["data"], success=(r["status"] == "ok"))
+        order_obj = OrderCancelled(orderId=r["data"], success=(r["status"] == "ok"))
         return order_obj.model_dump()
 
     def cancel_orders(
@@ -676,9 +655,7 @@ class HTX(Exchange):
             return []
 
         data = {"symbol": market, **kwargs}
-        self.signed_request(
-            "POST", "/v1/order/orders/batchCancelOpenOrders", data=data
-        )
+        self.signed_request("POST", "/v1/order/orders/batchCancelOpenOrders", data=data)
         # {
         # "data":{
         #     "failed-count":0,
@@ -690,6 +667,6 @@ class HTX(Exchange):
         cancelled_orders = []
         for order in orders:
             cancelled_orders.append(
-                OrderCancelled(id=order["id"], success=True).model_dump()
+                OrderCancelled(orderId=order["orderId"], success=True).model_dump()
             )
         return cancelled_orders

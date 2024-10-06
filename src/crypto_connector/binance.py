@@ -29,7 +29,6 @@ from crypto_connector.base.schemas import (
 
 
 class Binance(Exchange):
-
     base_url = "https://api.binance.com"
     name = "Binance"
     order_statuses = {
@@ -248,11 +247,7 @@ class Binance(Exchange):
         """  # noqa: E501
         r = self.signed_request("GET", "/sapi/v1/asset/wallet/balance")
         spot_balance_btc = float(
-            [
-                balance["balance"]
-                for balance in r
-                if balance["walletName"] == "Spot"
-            ][0]
+            [balance["balance"] for balance in r if balance["walletName"] == "Spot"][0]
         )
         balance_usd = spot_balance_btc * self.get_market_price("BTCUSDT")
         return balance_usd
@@ -361,9 +356,7 @@ class Binance(Exchange):
             info=market,
             min_amt=float(new_filters["NOTIONAL"]["minNotional"]),
             min_qty=float(new_filters["LOT_SIZE"]["minQty"]),
-            precision=self.decimal_places(
-                float(new_filters["LOT_SIZE"]["stepSize"])
-            ),
+            precision=self.decimal_places(float(new_filters["LOT_SIZE"]["stepSize"])),
             quote=market["quoteAsset"],
             spot=market["isSpotTradingAllowed"],
         )
@@ -475,9 +468,7 @@ class Binance(Exchange):
         :see: https://binance-docs.github.io/apidocs/spot/en/#exchange-information
         """  # noqa: E501
         if not market:
-            raise ValueError(
-                f"`market` cannot be empty, value passed: '{market}'"
-            )
+            raise ValueError(f"`market` cannot be empty, value passed: '{market}'")
 
         params = {"symbol": market, **kwargs}
         r = self.request("GET", "/api/v3/exchangeInfo", params=params)
@@ -560,7 +551,7 @@ class Binance(Exchange):
             amount=order["origQty"],
             client_order_id=order["clientOrderId"],
             dt=order["time"],
-            id=order["orderId"],
+            orderId=order["orderId"],
             info=order,
             last_update_timestamp=order["updateTime"],
             market=order["symbol"],
@@ -689,11 +680,9 @@ class Binance(Exchange):
         :see: https://binance-docs.github.io/apidocs/spot/en/#cancel-order-trade
         """  # noqa: E501
         orders = self.get_open_orders()
-        market = [order["market"] for order in orders if order["id"] == id]
+        market = [order["market"] for order in orders if order["orderId"] == id]
         if not market:
-            raise OrderNotFound(
-                f"Could not find an open order with this id '{id}'"
-            )
+            raise OrderNotFound(f"Could not find an open order with this id '{id}'")
 
         data = {"orderId": id, "symbol": market[0], **kwargs}
         r = self.signed_request("DELETE", "/api/v3/order", data=data)
@@ -713,7 +702,7 @@ class Binance(Exchange):
         #  'transactTime': 1717505772211,
         #  'type': 'LIMIT'}
         order_obj = OrderCancelled(
-            id=r["orderId"], success=(r["status"] == "CANCELED")
+            orderId=r["orderId"], success=(r["status"] == "CANCELED")
         )
         return order_obj.model_dump()
 
@@ -732,22 +721,18 @@ class Binance(Exchange):
             if market not in markets:
                 return []
             data = {"symbol": market}
-            resp = self.signed_request(
-                "DELETE", "/api/v3/openOrders", data=data
-            )
+            resp = self.signed_request("DELETE", "/api/v3/openOrders", data=data)
         else:
             for market in markets:
                 data = {"symbol": market}
-                r = self.signed_request(
-                    "DELETE", "/api/v3/openOrders", data=data
-                )
+                r = self.signed_request("DELETE", "/api/v3/openOrders", data=data)
                 resp.extend(r)
 
         cancelled_orders = []
         for order in resp:
             cancelled_orders.append(
                 OrderCancelled(
-                    id=order["orderId"], success=order["status"] == "CANCELED"
+                    orderId=order["orderId"], success=order["status"] == "CANCELED"
                 ).model_dump()
             )
         return cancelled_orders

@@ -28,7 +28,6 @@ from crypto_connector.base.schemas import (
 
 
 class Bybit(Exchange):
-
     base_url = "https://api.bybit.com"
     name = "Bybit"
     order_statuses = {
@@ -176,9 +175,7 @@ class Bybit(Exchange):
             url_path += "?" + encoded_payload
             return self.request(http_method, url_path=url_path, params=None)
         else:
-            return self.request(
-                http_method, url_path=url_path, data=encoded_payload
-            )
+            return self.request(http_method, url_path=url_path, data=encoded_payload)
 
     def handle_exception(self, r: Response) -> None:
         try:
@@ -291,9 +288,7 @@ class Bybit(Exchange):
         :see: https://bybit-exchange.github.io/docs/v5/account/wallet-balance
         """
         params = {"accountType": "UNIFIED"}
-        r = self.signed_request(
-            "GET", "/v5/account/wallet-balance", params=params
-        )
+        r = self.signed_request("GET", "/v5/account/wallet-balance", params=params)
         balance_usd = r["result"]["list"][0]["totalEquity"]
         return float(balance_usd)
 
@@ -332,9 +327,7 @@ class Bybit(Exchange):
             status=self.transfer_statuses[transfer["status"]],
             from_id=transfer["fromMemberId"],
             to_id=transfer["toMemberId"],
-            direction=(
-                "in" if transfer["toMemberId"] == self._account_id else "out"
-            ),
+            direction=("in" if transfer["toMemberId"] == self._account_id else "out"),
             coin=transfer["coin"],
             qty=transfer["amount"],
             info=transfer,
@@ -438,9 +431,7 @@ class Bybit(Exchange):
         #     "retExtInfo": {},
         #     "time": 1672712468011
         # }
-        markets = [
-            self._parse_market(market) for market in r["result"]["list"]
-        ]
+        markets = [self._parse_market(market) for market in r["result"]["list"]]
         return markets
 
     def get_market_info(self, market: str, **kwargs) -> dict[str, Any]:
@@ -449,9 +440,7 @@ class Bybit(Exchange):
         :see: https://bybit-exchange.github.io/docs/v5/market/instrument
         """
         if not market:
-            raise ValueError(
-                f"`market` cannot be empty, value passed: '{market}'"
-            )
+            raise ValueError(f"`market` cannot be empty, value passed: '{market}'")
 
         params = {"category": "SPOT", "symbol": market, **kwargs}
         r = self.request("GET", "/v5/market/instruments-info", params=params)
@@ -582,7 +571,7 @@ class Bybit(Exchange):
         order_obj = Order(
             amount=order["qty"],
             dt=order["createdTime"],
-            id=order["orderId"],
+            orderId=order["orderId"],
             info=order,
             fee=None,
             filled=order["cumExecQty"],
@@ -667,9 +656,7 @@ class Bybit(Exchange):
     #             break
     #     return orders
 
-    def get_open_orders(
-        self, market: str | None = None, **kwargs
-    ) -> list[dict]:
+    def get_open_orders(self, market: str | None = None, **kwargs) -> list[dict]:
         """
         Get all currently unfilled open orders.
         :see: https://bybit-exchange.github.io/docs/v5/order/open-order
@@ -741,11 +728,9 @@ class Bybit(Exchange):
         :see: https://bybit-exchange.github.io/docs/v5/order/cancel-order
         """
         orders = self.get_open_orders()
-        market = [order["market"] for order in orders if order["id"] == id]
+        market = [order["market"] for order in orders if order["orderId"] == id]
         if not market:
-            raise OrderNotFound(
-                f"Could not find an open order with this id '{id}'"
-            )
+            raise OrderNotFound(f"Could not find an open order with this id '{id}'")
 
         data = {
             "category": "spot",
@@ -761,7 +746,7 @@ class Bybit(Exchange):
         #  'retMsg': 'OK',
         #  'time': 1717505721947}
         order_obj = OrderCancelled(
-            id=r["result"]["orderId"], success=(r["retMsg"] == "OK")
+            orderId=r["result"]["orderId"], success=(r["retMsg"] == "OK")
         )
         return order_obj.model_dump()
 
@@ -789,7 +774,7 @@ class Bybit(Exchange):
         for order in r["result"]["list"]:
             cancelled_orders.append(
                 OrderCancelled(
-                    id=order["orderId"], success=r["result"]["success"]
+                    orderId=order["orderId"], success=r["result"]["success"]
                 ).model_dump()
             )
         return cancelled_orders

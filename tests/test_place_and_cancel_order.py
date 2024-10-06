@@ -25,10 +25,10 @@ def test_place_and_cancel_order(exchanges):
             qty=15,
             price=round(exc.get_market_price(market) * 0.95, 2),
         )
-        assert order.get("id") is not None
+        assert order.get("orderId") is not None
 
         # cancel it
-        result = exc.cancel_order(order["id"])
+        result = exc.cancel_order(order["orderId"])
         assert result["success"] is True
 
 

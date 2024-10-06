@@ -71,7 +71,7 @@ class Order(BaseModel):
 class OrderCancelled(BaseModel):
     model_config = ConfigDict(coerce_numbers_to_str=True)
 
-    id: str
+    orderId: str
     success: bool
 
 
