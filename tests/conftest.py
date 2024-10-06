@@ -19,10 +19,6 @@ def exchanges() -> dict:
         master_api_key=os.getenv("BINANCE_MASTER_API_KEY_TEST"),
         master_api_secret=os.getenv("BINANCE_MASTER_API_SECRET_TEST"),
     )
-    exchanges["bybit"] = cc.Bybit(
-        os.getenv("BYBIT_API_KEY_TEST"),
-        os.getenv("BYBIT_API_SECRET_TEST"),
-    )
     exchanges["htx"] = cc.HTX(
         os.getenv("HTX_API_KEY_TEST"),
         os.getenv("HTX_API_SECRET_TEST"),

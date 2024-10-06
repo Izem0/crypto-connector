@@ -49,9 +49,6 @@ def test_get_ohlcv(exchanges):
     ohlcv = exchanges["binance"].get_ohlcv("ETHUSDT")
     assert len(ohlcv) > 0
 
-    ohlcv = exchanges["bybit"].get_ohlcv("ETHUSDT")
-    assert len(ohlcv) > 0
-
     with pytest.raises(NotSupported):
         exchanges["htx"].get_ohlcv("ETHUSDT")
 

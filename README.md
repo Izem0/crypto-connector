@@ -7,11 +7,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
-This is a lightweight library that works as a connector to Binance SPOT, Bybit and HTX SPOT APIs.
+This is a lightweight library that works as a connector to Binance SPOT and HTX SPOT APIs.
 
 - Supported APIs:
     - [Binance SPOT API](https://developers.binance.com/docs/binance-spot-api-docs/rest-api)
-    - [Bybit API](https://bybit-exchange.github.io/docs/v5/intro)
     - [HTX SPOT API](https://www.htx.com/en-in/opend/newApiPages/)
 
 ## Installation
@@ -27,7 +26,6 @@ pip install crypto-connector
 import crypto_connector as cc
 
 exc = cc.Binance()
-# exc = cc.Bybit()
 # exc = cc.HTX()
 
 # get server time
@@ -53,10 +51,6 @@ exc = cc.Binance(
     master_api_key="",
     master_api_secret="",
 )
-# exc = cc.Bybit(
-#     api_key="",
-#     api_secret="",
-# )
 # exc = cc.HTX(
 #     api_key="",
 #     api_secret="",
