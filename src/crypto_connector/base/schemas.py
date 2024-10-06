@@ -51,11 +51,11 @@ class Order(BaseModel):
     fee: Fee | None = None
     fees: list[Fee] = []
     filled: float = 0.0
-    id: str
     info: dict[str, Any]
     last_trade_timestamp: int | None = None
     last_update_timestamp: int | None = None
     market: str
+    orderId: str
     post_only: bool | None = None
     price: float
     reduce_only: bool | None = None
