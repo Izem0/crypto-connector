@@ -554,11 +554,11 @@ class Binance(Exchange):
             type=order["type"].lower(),
             side=order["side"].lower(),
             qty=order["origQty"],
+            filled=order["executedQty"],
             amount=order["cummulativeQuoteQty"],
             price=order["price"],
             status=self.order_statuses[order["status"]],
             time_in_force=order["timeInForce"],
-            filled=order["executedQty"],
             fee=None,
             info=order,
         )

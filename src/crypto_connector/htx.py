@@ -501,7 +501,10 @@ class HTX(Exchange):
     def _parse_order(self, order: dict[str, Any]) -> dict[str, Any]:
         # handle typos in HTX response
         filled_amount = order.get("filled-amount", order.get("field-amount", 0))
-        filled_feed = order.get("filled-fees", order.get("field-fees", 0))
+        filled_cash_amount = order.get(
+            "filled-cash-amount", order.get("field-cash-amount", 0)
+        )
+        filled_fees = order.get("filled-fees", order.get("field-fees", 0))
 
         order_obj = Order(
             orderId=order["id"],
@@ -510,12 +513,12 @@ class HTX(Exchange):
             type=order["type"].split("-")[-1],
             side=order["type"].split("-")[0],
             qty=filled_amount,
-            amount=order["amount"],
+            filled=filled_amount,
+            amount=filled_cash_amount,
             price=order["price"],
             status=self.order_statuses[order["state"]],
             time_in_force=None,
-            filled=filled_amount,
-            fee=filled_feed,
+            fee=filled_fees,
             info=order,
         )
         return order_obj.model_dump()
