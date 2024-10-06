@@ -548,20 +548,19 @@ class Binance(Exchange):
     #########
     def _parse_order(self, order: dict[str, Any]) -> dict[str, Any]:
         order_obj = Order(
-            amount=order["origQty"],
-            client_order_id=order["clientOrderId"],
-            dt=order["time"],
             orderId=order["orderId"],
-            info=order,
-            last_update_timestamp=order["updateTime"],
+            dt=order["time"],
             market=order["symbol"],
-            price=order["price"],
-            remaining=None,
+            type=order["type"].lower(),
             side=order["side"].lower(),
+            qty=order["origQty"],
+            amount=order["cummulativeQuoteQty"],
+            price=order["price"],
             status=self.order_statuses[order["status"]],
             time_in_force=order["timeInForce"],
-            timestamp=order["time"],
-            type=order["type"].lower(),
+            filled=order["executedQty"],
+            fee=None,
+            info=order,
         )
         return order_obj.model_dump()
 

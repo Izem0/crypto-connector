@@ -26,10 +26,10 @@ class Market(BaseModel):
     spot: bool
 
 
-class Fee(BaseModel):
-    currency: str
-    cost: float
-    rate: float | None
+# class Fee(BaseModel):
+#     currency: str
+#     cost: float
+#     rate: float | None
 
 
 class OrderStatus(str, Enum):
@@ -44,28 +44,19 @@ class OrderStatus(str, Enum):
 class Order(BaseModel):
     model_config = ConfigDict(coerce_numbers_to_str=True, use_enum_values=True)
 
-    amount: float
-    average: float | None = None
-    client_order_id: str | None = None
-    dt: datetime
-    fee: Fee | None = None
-    fees: list[Fee] = []
-    filled: float = 0.0
-    info: dict[str, Any]
-    last_trade_timestamp: int | None = None
-    last_update_timestamp: int | None = None
-    market: str
     orderId: str
-    post_only: bool | None = None
-    price: float
-    reduce_only: bool | None = None
-    remaining: float | None = None
+    dt: datetime
+    market: Annotated[str, StringConstraints(to_upper=True)]
+    type: Literal["limit", "market"]
     side: Literal["buy", "sell"]
+    qty: float
+    amount: float
+    price: float
     status: OrderStatus
     time_in_force: str | None = None
-    timestamp: int
-    trades: list = []
-    type: Literal["limit", "market"]
+    filled: float
+    fee: float | None = None
+    info: dict[str, Any]
 
 
 class OrderCancelled(BaseModel):

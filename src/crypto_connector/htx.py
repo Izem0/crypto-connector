@@ -501,30 +501,22 @@ class HTX(Exchange):
     def _parse_order(self, order: dict[str, Any]) -> dict[str, Any]:
         # handle typos in HTX response
         filled_amount = order.get("filled-amount", order.get("field-amount", 0))
+        filled_feed = order.get("filled-fees", order.get("field-fees", 0))
 
         order_obj = Order(
-            amount=order["amount"],
-            average=None,
-            client_order_id=None,
-            dt=order["created-at"],
-            fee=None,
-            fees=[],
-            filled=filled_amount,
             orderId=order["id"],
-            info=order,
-            last_trade_timestamp=None,
-            last_update_timestamp=None,
-            market=order["symbol"].upper(),
-            post_only=None,
-            price=order["price"],
-            reduce_only=None,
-            remaining=None,
+            dt=order["created-at"],
+            market=order["symbol"],
+            type=order["type"].split("-")[-1],
             side=order["type"].split("-")[0],
+            qty=filled_amount,
+            amount=order["amount"],
+            price=order["price"],
             status=self.order_statuses[order["state"]],
             time_in_force=None,
-            timestamp=order["created-at"],
-            trades=[],
-            type=order["type"].split("-")[-1],
+            filled=filled_amount,
+            fee=filled_feed,
+            info=order,
         )
         return order_obj.model_dump()
 
