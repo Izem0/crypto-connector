@@ -9,11 +9,7 @@ from urllib.parse import urlencode, urlparse
 
 from requests.models import Response
 
-from crypto_connector.base.errors import (
-    BadResponse,
-    ExchangeError,
-    MissingCredentials,
-)
+from crypto_connector.base.errors import BadResponse, ExchangeError, MissingCredentials
 from crypto_connector.base.exchange import Exchange
 from crypto_connector.base.schemas import (
     API,
@@ -320,6 +316,7 @@ class HTX(Exchange):
 
     def _parse_transfer(self, transfer: dict[str, Any]) -> dict[str, Any]:
         tr = Transfer(
+            transferId=transfer["record-id"],
             date=transfer["transact-time"],
             status=TranferStatus.success,
             from_id=transfer["source-id"],
