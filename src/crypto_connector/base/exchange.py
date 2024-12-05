@@ -185,9 +185,9 @@ class Exchange:
     ###########
     # ACCOUNT #
     ###########
-    def get_api_key_information(self) -> dict:
+    def get_api_key_info(self) -> dict:
         raise NotSupported(
-            f"{self.name}: get_api_key_information() is not supported yet"
+            f"{self.name}: get_api_key_info() is not supported yet"
         )
 
     def get_balance(self) -> dict:
