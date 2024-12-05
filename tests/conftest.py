@@ -9,13 +9,6 @@ from crypto_connector.base.exchange import Exchange
 
 load_dotenv()
 
-# cannot run tests on github runners (because hosted in the US)
-if not sys.platform.startswith("win"):
-    pytest.skip(
-        reason="tests for windows only",
-        allow_module_level=True,
-    )
-
 
 CREDENTIALS = {
     "Binance": {
@@ -34,6 +27,13 @@ CREDENTIALS = {
 
 @pytest.fixture(scope="session")
 def exchange(request: pytest.FixtureRequest) -> Exchange:
+    # cannot run 'exchange' tests on github runners (because hosted in the US)
+    if not sys.platform.startswith("win"):
+        pytest.skip(
+            reason="tests for windows only",
+            allow_module_level=True,
+        )
+
     exchange_name = request.param
     exchange = getattr(cc, exchange_name)(**CREDENTIALS[exchange_name])
     return exchange
