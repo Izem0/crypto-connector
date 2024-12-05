@@ -2,6 +2,7 @@ import pytest
 
 from crypto_connector.base.exchange import Exchange
 
+
 @pytest.mark.parametrize(
     "exchange",
     argvalues=[
@@ -15,4 +16,5 @@ def test_get_server_time(exchange: Exchange) -> None:
 
 
 if __name__ == "__main__":
+    pytest.main([__file__])
     pytest.main([__file__])

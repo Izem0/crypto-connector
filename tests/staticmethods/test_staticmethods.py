@@ -23,9 +23,7 @@ exc = Exchange()
     ],
 )
 def test_truncate_float(f, decimal_places, expected) -> None:
-    assert math.isclose(
-        a=exc.truncate_float(f, decimal_places), b=expected, abs_tol=0
-    )
+    assert math.isclose(a=exc.truncate_float(f, decimal_places), b=expected, abs_tol=0)
 
 
 @pytest.mark.parametrize(
@@ -49,7 +47,7 @@ def test_decimal_places(n, expected) -> None:
 
 def test_decimal_places_wrong_input_type() -> None:
     with pytest.raises(ValueError):
-        exc.decimal_places("0.01") # type: ignore
+        exc.decimal_places("0.01")  # type: ignore
 
 
 @pytest.mark.parametrize(
