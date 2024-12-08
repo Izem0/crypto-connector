@@ -315,15 +315,16 @@ class HTX(Exchange):
         return balance.model_dump()
 
     def _parse_transfer(self, transfer: dict[str, Any]) -> dict[str, Any]:
+        amt = float(transfer["transact-amt"])
         tr = Transfer(
             transferId=transfer["record-id"],
             date=transfer["transact-time"],
             status=TranferStatus.success,
             from_id=transfer["source-id"],
             to_id=transfer["account-id"],
-            direction=("in" if transfer["account-id"] == self._account_id else "out"),
+            direction=("in" if amt > 0 else "out"),
             coin=transfer["currency"],
-            qty=transfer["transact-amt"],
+            qty=abs(amt),
             info=transfer,
         )
         return tr.model_dump()
