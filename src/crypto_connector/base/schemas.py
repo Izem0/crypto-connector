@@ -92,6 +92,6 @@ class Transfer(BaseModel):
     from_id: str
     to_id: str
     direction: Literal["in", "out"]
-    coin: str
+    coin: Annotated[str, StringConstraints(to_upper=True)]
     qty: float
     info: dict[str, Any]
