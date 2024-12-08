@@ -323,17 +323,22 @@ class Binance(Exchange):
         Return transfer history (in and out) of the current account.
         :see: https://binance-docs.github.io/apidocs/spot/en/#query-sub-account-spot-asset-transfer-history-for-master-account
         """  # noqa: E501
-        params = {"toEmail": self.sub_email, **kwargs}
+        params = {**kwargs}
         if start_date:
             params.update({"startTime": self.dt_to_unix(start_date)})
         if end_date:
             params.update({"endTime": self.dt_to_unix(end_date)})
-        r = self.signed_request(
-            "GET",
-            "/sapi/v1/sub-account/sub/transfer/history",
-            params=params,
-            master=True,
-        )
+        transfers = []
+        for key in ["fromEmail", "toEmail"]:
+            params.update({key: self.sub_email})
+            tr = self.signed_request(
+                "GET",
+                "/sapi/v1/sub-account/sub/transfer/history",
+                params=params,
+                master=True,
+            )
+            transfers.extend(tr)
+            params.pop(key)
         # [{'asset': 'USDT',
         # 'from': 'xxx@xxx.com',
         # 'qty': '30.00000000',
@@ -341,7 +346,7 @@ class Binance(Exchange):
         # 'time': 1716820838000,
         # 'to': 'yyy@yyy.com',
         # 'tranId': 175189153797}]
-        transfers = [self._parse_transfer(tr) for tr in r]
+        transfers = [self._parse_transfer(tr) for tr in transfers]
         return transfers
 
     ###########
