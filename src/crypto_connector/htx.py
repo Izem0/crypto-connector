@@ -157,7 +157,7 @@ class HTX(Exchange):
             return
 
         error = {}
-        error["status_code"] = rjson.get("err-code") or rjson.get("code")
+        error["error_code"] = rjson.get("err-code") or rjson.get("code")
         error["msg"] = rjson.get("err-msg") or rjson.get("message")
         error["url"] = r.url
         if self.headers:
