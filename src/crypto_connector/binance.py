@@ -166,6 +166,7 @@ class Binance(Exchange):
         error = {}
         error["error_code"] = rjson["code"]
         error["msg"] = rjson["msg"]
+        error["url"] = r.url
         if self.headers:
             error["headers"] = r.headers
         raise ExchangeError(error)
