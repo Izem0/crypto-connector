@@ -4,9 +4,16 @@ from decimal import Decimal
 from json.decoder import JSONDecodeError
 from typing import Any, Literal
 
+import backoff
 import requests
 
-from crypto_connector.base.errors import NotSupported
+from .errors import ExchangeError, NotSupported
+
+
+def backoff_hdlr(details):
+    print("Backing off {wait:0.1f} seconds after {tries} tries "
+           "calling function {target} with args {args} and kwargs "
+           "{kwargs}".format(**details))
 
 
 class Exchange:
@@ -138,6 +145,11 @@ class Exchange:
     def handle_exception(self, r: requests.Response) -> None:
         return
 
+    @backoff.on_exception(backoff.expo,
+                        ExchangeError,
+                        max_tries=5,
+                        jitter=None,
+                        on_backoff=backoff_hdlr)
     def request(
         self,
         http_method: str,
