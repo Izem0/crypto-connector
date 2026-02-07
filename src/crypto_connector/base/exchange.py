@@ -21,7 +21,6 @@ class Exchange:
 
     base_url: str
     name: str
-    recv_window = 5000
     timeframes: dict[str, Any]
     timeout = 10000
 

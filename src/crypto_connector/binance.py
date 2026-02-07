@@ -142,7 +142,7 @@ class Binance(Exchange):
 
         payload = params or data or {}
         payload.update(
-            {"timestamp": self.get_timestamp(), "recvWindow": self.recv_window}
+            {"timestamp": self.get_timestamp(), "recvWindow": payload.get("recvWindow")}
         )
         payload = self._cast_values(self._clean_none_values(payload))
         urlencoded_payload = self._urlencode_dict(payload)
