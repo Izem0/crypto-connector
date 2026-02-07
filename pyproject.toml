@@ -4,12 +4,12 @@ build-backend = "hatchling.build"
 
 [project]
 name = "crypto-connector"
-version = "0.5.6"
+version = "0.6.1"
 authors = [{ name = "Izem Mangione", email = "izem.mangione@gmail.com" }]
 description = "A lightweight library that works as a connector to several crypto exchanges APIs."
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = ["backoff==2.2.1", "requests>=2.32.1", "pydantic>=2.7.3"]
+dependencies = ["requests>=2.32.1", "pydantic>=2.7.3"]
 classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
